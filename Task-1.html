@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Calculator</title>
+</head>
+<body>
+  <h2>Expense Calculator</h2>
+  <input type="text" id="amount" placeholder="Enter amount">
+  <button id="addBtn">Add</button>
+  <h3>Total: <span id="total">0</span> Tk</h3>
+  <script>
+    let expenses = [];
+    function calculateTotal() {
+      return expenses.reduce((sum, value) => sum + value, 0);
+    }
+    document.getElementById("addBtn").addEventListener("click", function () {
+      let input = document.getElementById("amount");
+      let value = input.value;
+      if (value === "" || isNaN(value)) {
+        alert("Please enter a valid number!");
+        return;
+      }
+      expenses.push(Number(value));
+      document.getElementById("total").innerText = calculateTotal();
+      input.value = "";
+    });
+  </script>
+</body>
+</html>

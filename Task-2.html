@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book List</title>
+</head>
+<body>
+  <h2>Book List</h2>
+  <input type="text" id="bookName" placeholder="Book Name">
+  <input type="text" id="authorName" placeholder="Author Name">
+  <button id="saveBtn">Save</button>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Book</th>
+        <th>Author</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="bookList"></tbody>
+  </table>
+  <script>
+    let books = JSON.parse(localStorage.getItem("books")) || [];
+    const bookList = document.getElementById("bookList");
+    function displayBooks() {
+      bookList.innerHTML = "";
+      books.forEach((book, index) => {
+        let tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${book.name}</td>
+          <td>${book.author}</td>
+          <td><button data-index="${index}">Delete</button></td>
+        `;
+        bookList.appendChild(tr);
+      });
+    }
+    document.getElementById("saveBtn").addEventListener("click", function () {
+      let name = document.getElementById("bookName").value;
+      let author = document.getElementById("authorName").value;
+      if (name === "" || author === "") {
+        alert("Please fill all fields!");
+        return;
+      }
+      books.push({ name, author });
+      localStorage.setItem("books", JSON.stringify(books));
+      displayBooks();
+      document.getElementById("bookName").value = "";
+      document.getElementById("authorName").value = "";
+    });
+    bookList.addEventListener("click", function (e) {
+      if (e.target.tagName === "BUTTON") {
+        let index = e.target.getAttribute("data-index");
+        books.splice(index, 1);
+        localStorage.setItem("books", JSON.stringify(books));
+        displayBooks();
+      }
+    });
+    displayBooks();
+  </script>
+</body>
+</html>
